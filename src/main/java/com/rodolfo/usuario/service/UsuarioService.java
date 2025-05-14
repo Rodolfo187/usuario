@@ -11,5 +11,7 @@ public interface UsuarioService {
 	UsuarioDto recuperarPorId(Long id);
 	
 	void guardar(UsuarioDto usuario);
+	
+	UsuarioDto actualizarUsuario(Long id, UsuarioDto usuario);
 
 }
