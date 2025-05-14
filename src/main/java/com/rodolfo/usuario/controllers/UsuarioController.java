@@ -1,5 +1,7 @@
 package com.rodolfo.usuario.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +27,19 @@ public class UsuarioController {
 	
 	@PostMapping("/guardar")
 	public ResponseEntity<UsuarioDto> guardar(@RequestBody UsuarioDto usuario){
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		usuarioService.guardar(usuario);
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
 	}
 	
 	@GetMapping("/recuperarPorId/{id}")
 	public ResponseEntity<UsuarioDto> recuperaPorId(@PathVariable Long id) {
 		
 		return ResponseEntity.status(HttpStatus.FOUND).body(usuarioService.recuperarPorId(id));
+	}
+	
+	@GetMapping("/recuperarTodo")
+	public ResponseEntity<List<UsuarioDto>> recuperaTodosUsuarios(){
+		return ResponseEntity.ok(usuarioService.recuperarUsuarios());
 	}
 	
 	@PutMapping("/actualizar/{id}")
