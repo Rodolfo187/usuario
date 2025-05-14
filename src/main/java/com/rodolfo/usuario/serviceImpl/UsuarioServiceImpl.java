@@ -41,7 +41,8 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	@Override
 	public UsuarioDto recuperarPorId(Long id) {
-		Usuario usuarioEncontrado = usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se encontro el id usuario "+id));
+		Usuario usuarioEncontrado = usuarioRepository.findById(id).orElseThrow(
+				() -> new EntityNotFoundException("No se encontro el id usuario "+id));
 		 return UsuarioMapper.INSTANCE.usuarioToUsuarioDTO(usuarioEncontrado);
 	}
 
@@ -49,6 +50,18 @@ public class UsuarioServiceImpl implements UsuarioService{
 	@Transactional
 	public void guardar(UsuarioDto usuario) {
 		usuarioRepository.save(UsuarioMapper.INSTANCE.usuarioDtoToUsuario(usuario));	
+	}
+
+	@Override
+	@Transactional
+	public UsuarioDto actualizarUsuario(Long id, UsuarioDto usuario) {
+		Usuario usuarioEncontrado = usuarioRepository.findById(id).orElseThrow(
+				() -> new EntityNotFoundException("No se encontro el id usuario "+id));
+		usuarioEncontrado.setNombre(usuario.getNombre());
+		usuarioEncontrado.setEdad(usuario.getEdad());
+		usuarioEncontrado.setEmail(usuario.getEmail());
+		
+		return UsuarioMapper.INSTANCE.usuarioToUsuarioDTO(usuarioRepository.save(usuarioEncontrado));
 	}
 
 }
